@@ -11,15 +11,15 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.1 r"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    xml:space="preserve"
    width="105mm"
    height="148mm"
    viewBox="0 0 396.85041 559.37009"
-   sodipodi:docname="cover front.svg"><metadata
+   sodipodi:docname="front.svg"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6" /><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -29,14 +29,14 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-width="1280"
+     inkscape:window-height="741"
      id="namedview4"
      showgrid="false"
      showguides="false"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="230.58506"
-     inkscape:cy="436.52406"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="166.2711"
+     inkscape:cy="208.8493"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -86,5 +86,5 @@
          id="tspan4172"
          x="159.60947"
          y="11.603004"
-         style="font-size:16.00001526px;line-height:1.25;text-align:center;text-anchor:middle;fill:#231f20;fill-opacity:1;stroke-width:1.06666768px">April 2017</tspan></text>
+         style="font-size:16.00001526px;line-height:1.25;text-align:center;text-anchor:middle;fill:#231f20;fill-opacity:1;stroke-width:1.06666768px">November 2017</tspan></text>
 </g></svg>
