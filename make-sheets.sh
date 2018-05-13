@@ -46,6 +46,12 @@ rm -rf *
 localc --convert-to pdf ../tunes.ods
 lowriter --convert-to pdf ../network.odt
 
+# Wait for PDFs (generation is sometimes run in background)
+for((i=0; $i<50; i++)); do
+	[ -e "tunes.pdf" -a -e "network.pdf" ] && break
+	sleep 0.1
+done
+
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
 pdftk A=../front.pdf B=network.pdf C=tunes.pdf D=../back.pdf cat A B C5-end D output tunesheet.pdf
 
