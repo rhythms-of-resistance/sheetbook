@@ -56,7 +56,7 @@ done
 pdftk A=../front.pdf B=network.pdf C=tunes.pdf D=../back.pdf cat A B C5-end D output tunesheet.pdf
 
 # Create a PDF file that has all the pages in landscape
-pdftk A=tunesheet.pdf cat A1-7 A8west A9 A10-14west A15 A16-20west A21 A22-25west A26 A27-29west A30-33 A34west A35 A36west A37 A38west A39-end output tunesheet-rotated.pdf
+pdftk A=tunesheet.pdf cat A1-7 A8west A9 A10-14west A15 A16-20west A21 A22-25west A26 A27-29west A30-33 A35west A36 A37west A38 A39west A40-end output tunesheet-rotated.pdf
 
 # Convert to A4
 pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet-rotated.pdf
@@ -75,8 +75,9 @@ pdftk A=tunesheet-rotated.pdf cat A44 A1 A2 A43 A42 A3 A4 A41 A40 A5 A6 A39 A38 
 # Generate A4 pages with two A5 pages per page
 pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
 
+
 # Remove temporary files and rename output files
-rm -f network.pdf tunes.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf tunesheet-rotated.pdf tunesheet.pdf
+rm -f network.pdf tunes.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf tunesheet-rotated.pdf
 mv tunesheet-ordered-a5-nup.pdf tunesheet-a5.pdf
 mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 
@@ -105,12 +106,15 @@ pdftk A=tunesheet-a4.pdf cat A28-29east output single/rope-skipping.pdf
 pdftk A=tunesheet-a4.pdf cat A30-31 output single/samba-reggae.pdf
 pdftk A=tunesheet-a4.pdf cat A32 output single/sambasso.pdf
 pdftk A=tunesheet-a4.pdf cat A33 output single/sheffield-samba-reggae.pdf
+pdftk A=tunesheet.pdf    cat A34 output single/tequila.pdf
 pdftk A=tunesheet-a4.pdf cat A34east output single/walc.pdf
 pdftk A=tunesheet-a4.pdf cat A35 output single/van-harte-pardon.pdf
 pdftk A=tunesheet-a4.pdf cat A36east output single/voodoo.pdf
 pdftk A=tunesheet-a4.pdf cat A37 output single/xango.pdf
 pdftk A=tunesheet-a4.pdf cat A38east output single/zurav-love.pdf
 pdftk A=tunesheet-a4.pdf cat A39-43 output single/dances.pdf
+
+rm -f tunesheet.pdf
 
 
 # Print result
