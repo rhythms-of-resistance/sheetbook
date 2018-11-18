@@ -53,7 +53,7 @@ for((i=0; $i<50; i++)); do
 done
 
 # Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-pdftk A=tunes.pdf cat A5-7 A8west A9 A10-14west A15 A16-20west A21 A22-25west A26 A27-29west A30-33 A34-35west A36 A37west A38 A39west A40-end output tunes-rotated.pdf
+pdftk A=tunes.pdf cat A5-7 A8west A9 A10-14west A17 A18-22west A23 A24-27west A28 A29-31west A32-35 A36-37west A38 A39west A40 A41west A42-end output tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
 pdftk A=../front.pdf B=network.pdf C=tunes-rotated.pdf D=../back.pdf E=../blank.pdf cat A B C1-3 E C4-end D output tunesheet.pdf
@@ -76,8 +76,8 @@ pdftk A=tunesheet.pdf cat A48 A1 A2 A47 A46 A3 A4 A45 A44 A5 A6 A43 A42 A7 A8 A4
 pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
 
 
-# Remove temporary files and rename output files
-rm -f network.pdf tunes.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf
+# Rename output files
+#rm -f network.pdf tunes.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf
 mv tunesheet-ordered-a5-nup.pdf tunesheet-a5.pdf
 mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 
@@ -114,7 +114,11 @@ pdftk A=tunesheet-a4.pdf cat A40 output single/xango.pdf
 pdftk A=tunesheet-a4.pdf cat A41east output single/zurav-love.pdf
 pdftk A=tunesheet-a4.pdf cat A42-47 output single/dances.pdf
 
-rm -f tunesheet.pdf
+pdftk A=tunes.pdf cat A15-16 output coupe-decale.pdf
+pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
+
+# Remove temporary files
+rm -f network.pdf tunes.pdf tunesheet.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf
 
 
 # Print result
