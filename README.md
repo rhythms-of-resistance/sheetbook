@@ -6,6 +6,10 @@ This is the central place to manage the Rhythms of Resistance tunesheets. The we
 
 [`tunes.ods`](./tunes.ods) contains the tune and dance sheets.
 
+
+Rebuild
+=======
+
 After making changes, follow these steps:
 
 1. Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font installed, then update the month/year in `front.svg` and regenerate `front.pdf`.
@@ -13,3 +17,35 @@ After making changes, follow these steps:
 3. Make sure you have LibreOffice, pdftk, pdfjam and pdfnup installed
 4. Run `./make-sheets.sh`
 5. Commit your changes (including the generated files)
+
+
+Styling guidelines
+==================
+
+Tune name
+---------
+
+18pt Arial bold, underligned by 2.5pt black double-line
+
+Tune sign
+---------
+
+Right of tune name. 12pt Arial.
+
+Groove
+------
+
+* Heading "Groove" 12pt Arial bold
+* Beat numbers underlined by 1.75pt bold. No lines in between beats
+* Instruments left-aligned, 9pt Arial
+* Strokes centered, 9pt Arial. In between strokes 0.05pt #969696 vertical lines. In between beats 0.75pt black vertical lines. In between bars 1.75pt black vertical lines. No horizontal lines.
+* One free line separating different instruments.
+
+Breaks
+------
+
+* Break name: 10pt bold
+* Break sign underneath break name, 9pt Arial italic
+* Strokes same style as in Groove, but whole break surrounded by 0.75pt black vertical border.
+* Any explanation right of break or underneath (right-aligned), 9pt Arial
+* No free lines
