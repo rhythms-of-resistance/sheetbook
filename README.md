@@ -10,6 +10,6 @@ After making changes, follow these steps:
 
 1. Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font installed, then update the month/year in `front.svg` and regenerate `front.pdf`.
 2. If you added new pages to the tunesheet or moved pages around, make sure to update the page numbers in the [`make-sheets.sh`](./make-sheets.sh) script.
-3. Make sure you have LibreOffice, ImageMagick, pdftk, pdfjam and pdfnup installed
+3. Make sure you have LibreOffice, pdftk, pdfjam and pdfnup installed
 4. Run `./make-sheets.sh`
 5. Commit your changes (including the generated files)

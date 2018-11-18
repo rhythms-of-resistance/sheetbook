@@ -16,10 +16,6 @@ if ! which localc lowriter >/dev/null 2>&1; then
 	missing+=("LibreOffice")
 fi
 
-if ! which convert >/dev/null 2>&1; then
-	missing+=("ImageMagick")
-fi
-
 if [ "${#missing[@]}" -gt 0 ]; then
 	echo "Please install the following programs: ${missing[@]}"
 	exit 1
@@ -46,9 +42,6 @@ cd generated
 rm -rf *
 
 
-# Generate blank page
-convert xc:none -page A4 blank.pdf
-
 # Convert files to PDF
 localc --convert-to pdf ../tunes.ods
 lowriter --convert-to pdf ../network.odt
@@ -63,7 +56,7 @@ done
 pdftk A=tunes.pdf cat A5-7 A8west A9 A10-14west A15 A16-20west A21 A22-25west A26 A27-29west A30-33 A34-35west A36 A37west A38 A39west A40-end output tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
-pdftk A=../front.pdf B=network.pdf C=tunes-rotated.pdf D=../back.pdf E=blank.pdf cat A B C1-3 E C4-end D output tunesheet.pdf
+pdftk A=../front.pdf B=network.pdf C=tunes-rotated.pdf D=../back.pdf E=../blank.pdf cat A B C1-3 E C4-end D output tunesheet.pdf
 
 # Convert to A4
 pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet.pdf
@@ -84,7 +77,7 @@ pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
 
 
 # Remove temporary files and rename output files
-rm -f blank.pdf network.pdf tunes.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf
+rm -f network.pdf tunes.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf
 mv tunesheet-ordered-a5-nup.pdf tunesheet-a5.pdf
 mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 
