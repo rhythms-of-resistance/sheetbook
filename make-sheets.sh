@@ -6,7 +6,7 @@ set -e
 # Check for missing programs
 
 missing=()
-for i in pdftk pdfjam pdfnup; do
+for i in pdftk pdfjam pdfnup inkscape; do
 	if ! which "$i" >/dev/null 2>&1; then
 		missing+=("$i")
 	fi
@@ -25,7 +25,7 @@ fi
 # Check for missing files
 
 missing=()
-for i in tunes.ods front.pdf back.pdf network.odt; do
+for i in tunes.ods front.svg back.svg network.odt; do
 	if [ ! -f "$i" ]; then
 		missing+=("$i")
 	fi
@@ -42,9 +42,17 @@ cd generated
 rm -rf *
 
 
+# Put current month in
+month="$(date '+%B %Y')"
+cat ../front.svg | sed -re "s/\[month]/$month/g" > front.svg
+cat ../back.svg | sed -re "s/\[month]/$month/g" > back.svg
+
+
 # Convert files to PDF
 localc --convert-to pdf ../tunes.ods
 lowriter --convert-to pdf ../network.odt
+inkscape front.svg --export-pdf=front.pdf
+inkscape back.svg --export-pdf=back.pdf
 
 # Wait for PDFs (generation is sometimes run in background)
 for((i=0; $i<50; i++)); do
@@ -56,7 +64,7 @@ done
 pdftk A=tunes.pdf cat A5-7 A8west A9 A10-14west A17 A18-22west A23 A24-27west A28 A29-31west A32-35 A36-37west A38 A39west A40 A41west A42-end output tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
-pdftk A=../front.pdf B=network.pdf C=tunes-rotated.pdf D=../back.pdf E=../blank.pdf cat A B C1-3 E C4-end D output tunesheet.pdf
+pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 E C4-end D output tunesheet.pdf
 
 # Convert to A4
 pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet.pdf
@@ -118,7 +126,7 @@ pdftk A=tunes.pdf cat A15-16 output coupe-decale.pdf
 pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
 
 # Remove temporary files
-rm -f network.pdf tunes.pdf tunesheet.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf
+rm -f network.pdf tunes.pdf tunesheet.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf front.svg front.pdf back.svg back.pdf
 
 
 # Print result

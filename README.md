@@ -1,22 +1,10 @@
 This is the central place to manage the Rhythms of Resistance tunesheets. The website and other places link to the generated files in this repository.
 
-[`front.svg`](./front.svg) and [`back.svg`](./back.svg) contain the front and back cover. When making changes to them, also update the exported PDF files `front.pdf` and `back.pdf`. Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font installed.
+[`front.svg`](./front.svg) and [`back.svg`](./back.svg) contain the front and back cover. A `[month]` placeholder can be used to automatically fill in the current month+year.
 
 [`network.odt`](./network.odt) is the description of the RoR network, principles, history and RoR Player.
 
 [`tunes.ods`](./tunes.ods) contains the tune and dance sheets.
-
-
-Rebuild
-=======
-
-After making changes, follow these steps:
-
-1. Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font installed, then update the month/year in `front.svg` and regenerate `front.pdf`.
-2. If you added new pages to the tunesheet or moved pages around, make sure to update the page numbers in the [`make-sheets.sh`](./make-sheets.sh) script.
-3. Make sure you have LibreOffice, pdftk, pdfjam and pdfnup installed
-4. Run `./make-sheets.sh`
-5. Commit your changes (including the generated files)
 
 
 Styling guidelines
@@ -25,7 +13,7 @@ Styling guidelines
 Tune name
 ---------
 
-18pt Arial bold, underligned by 2.5pt black double-line
+18pt Arial bold, underlined by 2.5pt black double-line
 
 Tune sign
 ---------
@@ -49,3 +37,25 @@ Breaks
 * Strokes same style as in Groove, but whole break surrounded by 0.75pt black vertical border.
 * Any explanation right of break or underneath (right-aligned), 9pt Arial
 * No free lines
+
+
+Generate
+========
+
+PDF files are automatically generated and published when committing changes. If you added new pages to the tunesheet or moved pages around, make sure to update the page numbers in the [`make-sheets.sh`](./make-sheets.sh) script.
+
+If you want to do a manual rebuild, follow one of the following instructions.
+
+### Using docker
+
+This is the most reliable way, as no dependencies/fonts (except docker) have to be installed.
+
+```bash
+docker run --rm -v "$PWD:/home/ror/sheetbook" rhythmsofresistance/sheetbook-build
+```
+
+### By hand
+
+Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font and LibreOffice, Inkscape, pdftk, pdfjam and pdfnup installed.
+
+Then run `./make-sheets.sh`.
