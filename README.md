@@ -7,6 +7,31 @@ This is the central place to manage the Rhythms of Resistance tunesheets. The we
 [`tunes.ods`](./tunes.ods) contains the tune and dance sheets.
 
 
+Update
+======
+
+If you added new pages to the tunesheet or moved pages around, make sure to update the page numbers in the [`make-sheets.sh`](./make-sheets.sh) script.
+
+PDF files are automatically generated and published to the [generated branch](https://github.com/rhythms-of-resistance/sheetbook/tree/master/generated) when committing changes.
+
+If you want to do a manual rebuild, follow one of the following instructions.
+
+### Manual update using docker
+
+This is the most reliable way, as no dependencies/fonts (except docker) have to be installed.
+
+```bash
+docker run --rm -v "$PWD:/home/ror/sheetbook" rhythmsofresistance/sheetbook-build
+```
+
+### Manual update using script
+
+Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font and LibreOffice, Inkscape, pdftk, pdfjam and pdfnup installed.
+
+Then run `./make-sheets.sh`.
+
+
+
 Styling guidelines
 ==================
 
@@ -37,25 +62,3 @@ Breaks
 * Strokes same style as in Groove, but whole break surrounded by 0.75pt black vertical border.
 * Any explanation right of break or underneath (right-aligned), 9pt Arial
 * No free lines
-
-
-Generate
-========
-
-PDF files are automatically generated and published when committing changes. If you added new pages to the tunesheet or moved pages around, make sure to update the page numbers in the [`make-sheets.sh`](./make-sheets.sh) script.
-
-If you want to do a manual rebuild, follow one of the following instructions.
-
-### Using docker
-
-This is the most reliable way, as no dependencies/fonts (except docker) have to be installed.
-
-```bash
-docker run --rm -v "$PWD:/home/ror/sheetbook" rhythmsofresistance/sheetbook-build
-```
-
-### By hand
-
-Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font and LibreOffice, Inkscape, pdftk, pdfjam and pdfnup installed.
-
-Then run `./make-sheets.sh`.
