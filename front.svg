@@ -11,7 +11,7 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.2 2405546, 2018-03-11"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
    xml:space="preserve"
    width="105mm"
    height="148mm"
@@ -35,7 +35,7 @@
      showgrid="false"
      showguides="false"
      inkscape:zoom="1.4142136"
-     inkscape:cx="-119.40003"
+     inkscape:cx="-30.304578"
      inkscape:cy="293.70211"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -53,7 +53,7 @@
    inkscape:connector-curvature="0"
    sodipodi:nodetypes="cssccccsscccccccccscccscssccccccccscccscsssccscsccccccccsccccsccccccccccscsccccccccccccccsscscccccsccccccccsccccscscsccccccccccccccccccccscscccccscccccccccccccccsccccccscccccsccsccccscccsscccscccccscsccccscccccccccccccsccccccccsssscccsccccccccccccccscsscccsccccsccscsccccccccccccccccccccsccccssccsccccscccccccsscccscccccccccccccccccccccsccccccccccccccccccccccccccsssssscccccccssscccccssscsczzscccccccsccccccccscsccccccccscscccssccsccscscsccccccccccsccccccscccsccccccccssscscccccccccccccccccccccccccscccsccccccscccccccccsccccccccccsccccccssscscccscccssccsccccccssccccccccscsccccccccccccscccsccccssccssscccccccsccsscscccccssccccccccccccccccscsccsccccccsccscccccscscssssscccccsscccccscsccccccscccccccccccccccccccccscsccscssccccccccscccccsccccsscssccccccccscccccccccccsscccccscccccscsccscccsccccsccccscccccccccccssscssccccccccccscccccccccssccccccccsscccccccccccccccccscccccsccccscccsccscccscccsccccccccsccscccccccccscccccccccccccssccccccccccsssccsscscscc" /><text
    xml:space="preserve"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80001259px;line-height:0%;font-family:'GrilledCheese BTN Toasted';-inkscape-font-specification:'GrilledCheese BTN Toasted';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#231f20;fill-opacity:1;stroke:none;stroke-width:1.06666768px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80001259px;line-height:0%;font-family:'GrilledCheese BTN Toasted';-inkscape-font-specification:'GrilledCheese BTN Toasted';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.06666768px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
    x="159.62158"
    y="-50.267277"
    id="text4154"
@@ -62,13 +62,14 @@
      id="tspan4156"
      x="159.62158"
      y="-50.267277"
-     style="font-size:33.06669998px;line-height:1.25;fill:#231f20;fill-opacity:1;stroke-width:1.06666768px">ROR</tspan></text>
+     style="font-size:33.06669998px;line-height:1.25;fill:#000000;fill-opacity:1;stroke-width:1.06666768px;">ROR</tspan></text>
+
 
 
 
 <text
    xml:space="preserve"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80001259px;line-height:0%;font-family:'GrilledCheese BTN Toasted';-inkscape-font-specification:'GrilledCheese BTN Toasted';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#231f20;fill-opacity:1;stroke:none;stroke-width:1.06666768px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80001259px;line-height:0%;font-family:'GrilledCheese BTN Toasted';-inkscape-font-specification:'GrilledCheese BTN Toasted';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.06666768px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
    x="159.59108"
    y="-19.330839"
    id="text4158"
@@ -77,13 +78,14 @@
      id="tspan4160"
      x="159.59108"
      y="-19.330839"
-     style="font-size:33.06669998px;line-height:1.25;fill:#231f20;fill-opacity:1;stroke-width:1.06666768px">Tunes &amp; Dances</tspan></text>
+     style="font-size:33.06669998px;line-height:1.25;fill:#000000;fill-opacity:1;stroke-width:1.06666768px;">Tunes &amp; Dances</tspan></text>
+
 
 
 
 <text
    xml:space="preserve"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80001259px;line-height:0%;font-family:'GrilledCheese BTN Toasted';-inkscape-font-specification:'GrilledCheese BTN Toasted';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#231f20;fill-opacity:1;stroke:none;stroke-width:1.06666768px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80001259px;line-height:0%;font-family:'GrilledCheese BTN Toasted';-inkscape-font-specification:'GrilledCheese BTN Toasted';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.06666768px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
    x="159.60947"
    y="11.603004"
    id="text4170"
@@ -92,7 +94,8 @@
      id="tspan4172"
      x="159.60947"
      y="11.603004"
-     style="font-size:16.00001526px;line-height:1.25;text-align:center;text-anchor:middle;fill:#231f20;fill-opacity:1;stroke-width:1.06666768px">[month]</tspan></text>
+     style="font-size:16.00001526px;line-height:1.25;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:1.06666768px;">[month]</tspan></text>
+
 
 
 
