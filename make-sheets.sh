@@ -38,6 +38,7 @@ fi
 
 
 # Clear previous generated files
+[ ! -e generated ] && mkdir generated
 cd generated
 rm -rf *
 
