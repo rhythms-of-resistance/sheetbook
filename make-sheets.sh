@@ -38,6 +38,7 @@ fi
 
 
 # Clear previous generated files
+[ ! -e generated ] && mkdir generated
 cd generated
 rm -rf *
 
@@ -61,10 +62,10 @@ for((i=0; $i<50; i++)); do
 done
 
 # Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-pdftk A=tunes.pdf cat A5-7 A8west A9 A10-14west A17 A18-22west A23 A24-27west A28 A29-31west A32-35 A36-37west A38 A39west A40 A41west A42-end output tunes-rotated.pdf
+pdftk A=tunes.pdf cat A5-7 A8-9west A10west A11 A12-14west A17 A18-22west A23 A24-27west A28 A29west A30 A31-32west A33-35 A36-38west A39 A40west A41 A42west A43-end output tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
-pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 E C4-end D output tunesheet.pdf
+pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-end D output tunesheet.pdf
 
 # Convert to A4
 pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet.pdf
@@ -93,27 +94,28 @@ mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 # Generate single tunes
 mkdir single
 pdftk A=tunesheet-a4.pdf cat A6-8 output single/breaks.pdf
-pdftk A=tunesheet-a4.pdf cat A10east output single/afoxe.pdf
-pdftk A=tunesheet-a4.pdf cat A11 output single/angela-davis.pdf
-pdftk A=tunesheet-a4.pdf cat A12-13east output single/bhangra.pdf
+pdftk A=tunesheet-a4.pdf cat A9east output single/afoxe.pdf
+pdftk A=tunesheet-a4.pdf cat A12 output single/angela-davis.pdf
+pdftk A=tunesheet-a4.pdf cat A10-11east output single/bhangra.pdf
 pdftk A=tunesheet-a4.pdf cat A14-15east output single/crazy-monkey.pdf
-pdftk A=tunesheet-a4.pdf cat A16east output single/cochabamba.pdf
-pdftk A=tunesheet-a4.pdf cat A17 output single/custard.pdf
-pdftk A=tunesheet-a4.pdf cat A18east output single/drum-bass.pdf
-pdftk A=tunesheet-a4.pdf cat A19east output single/drunken-sailor.pdf
-pdftk A=tunesheet-a4.pdf cat A20east output single/funk.pdf
-pdftk A=tunesheet-a4.pdf cat A21east output single/hafla.pdf
-pdftk A=tunesheet-a4.pdf cat A22east output single/hedgehog.pdf
-pdftk A=tunesheet-a4.pdf cat A23 output single/karla-shnikov.pdf
+pdftk A=tunesheet-a4.pdf cat A13east output single/cochabamba.pdf
+pdftk A=tunesheet-a4.pdf cat A16 output single/custard.pdf
+pdftk A=tunesheet-a4.pdf cat A17east output single/drum-bass.pdf
+pdftk A=tunesheet-a4.pdf cat A18east output single/drunken-sailor.pdf
+pdftk A=tunesheet-a4.pdf cat A19east output single/funk.pdf
+pdftk A=tunesheet-a4.pdf cat A20east output single/hafla.pdf
+pdftk A=tunesheet-a4.pdf cat A21east output single/hedgehog.pdf
+pdftk A=tunesheet-a4.pdf cat A22 output single/karla-shnikov.pdf
 pdftk A=tunesheet-a4.pdf cat A24-25east output single/menaiek.pdf
-pdftk A=tunesheet-a4.pdf cat A26east output single/no-border-bossa.pdf
-pdftk A=tunesheet-a4.pdf cat A27east output single/nova-balanca.pdf
-pdftk A=tunesheet-a4.pdf cat A28 output single/orangutan.pdf
-pdftk A=tunesheet-a4.pdf cat A29east output single/ragga.pdf
+pdftk A=tunesheet-a4.pdf cat A23east output single/no-border-bossa.pdf
+pdftk A=tunesheet-a4.pdf cat A26east output single/nova-balanca.pdf
+pdftk A=tunesheet-a4.pdf cat A27 output single/orangutan.pdf
+pdftk A=tunesheet-a4.pdf cat A28east output single/ragga.pdf
 pdftk A=tunesheet-a4.pdf cat A30-31east output single/rope-skipping.pdf
 pdftk A=tunesheet-a4.pdf cat A32-33 output single/samba-reggae.pdf
-pdftk A=tunesheet-a4.pdf cat A34 output single/sambasso.pdf
-pdftk A=tunesheet-a4.pdf cat A35 output single/sheffield-samba-reggae.pdf
+pdftk A=tunesheet-a4.pdf cat A29 output single/sambasso.pdf
+pdftk A=tunesheet-a4.pdf cat A34 output single/sheffield-samba-reggae.pdf
+pdftk A=tunesheet-a4.pdf cat A35east output single/the-roof-is-on-fire.pdf
 pdftk A=tunesheet-a4.pdf cat A36east output single/tequila.pdf
 pdftk A=tunesheet-a4.pdf cat A37east output single/walc.pdf
 pdftk A=tunesheet-a4.pdf cat A38 output single/van-harte-pardon.pdf

@@ -15,6 +15,7 @@ before_script:
     - git merge --no-commit -s ours "$TRAVIS_COMMIT"
     - ls -1a | grep -Fxv . | grep -Fxv .. | grep -Fxv .git | xargs rm -rf
     - git checkout "$TRAVIS_COMMIT" -- ./
+    - rm -f .gitignore
     - docker pull rhythmsofresistance/sheetbook-build
 
 script:
