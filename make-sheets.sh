@@ -45,8 +45,9 @@ rm -rf *
 
 # Put current month in
 month="$(date '+%B %Y')"
-cat ../front.svg | sed -re "s/\[month]/$month/g" > front.svg
-cat ../back.svg | sed -re "s/\[month]/$month/g" > back.svg
+version="$(git log --pretty=format:'%h' -n 1)"
+cat ../front.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > front.svg
+cat ../back.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > back.svg
 
 
 # Convert files to PDF
@@ -62,31 +63,33 @@ for((i=0; $i<50; i++)); do
 done
 
 # Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-pdftk A=tunes.pdf cat A5-7 A8-9west A10west A11 A12-14west A17 A18-22west A23 A24-27west A28 A29west A30 A31-32west A33-35 A36-38west A39 A40west A41 A42west A43-end output tunes-rotated.pdf
+pdftk A=tunes.pdf cat A5-7 A8-9west A10west A11 A12-14west A17 A18-22west A23 A24-27west A28 A29west A30 A31-32west A33-35 A36west A38-40west A41 A42west A43 A44west A45-end output tunes-rotated.pdf
 
-# Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
-pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-end D output tunesheet.pdf
+# Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf) (make sure that the page number is an even number)
+pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-37 E C38-end D output tunesheet.pdf
+
+# The same, but make sure that the page number is divisible by 4
+pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-37 E C38-end E E D output tunesheet-4.pdf
 
 # Convert to A4
 pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet.pdf
 
 # Order pages for A6 double booklet print
-# JavaScript code to generate page string (n has to be dividable by 4): var n=48,s=[ ],m=Math.ceil(n/2);for(i=1;i<=m;i+=2){s.push(n-i+1,i,n-i+1,i,i+1,n-i,i+1,n-i);};'A'+s.join(' A');
-pdftk A=tunesheet.pdf cat A48 A1 A48 A1 A2 A47 A2 A47 A46 A3 A46 A3 A4 A45 A4 A45 A44 A5 A44 A5 A6 A43 A6 A43 A42 A7 A42 A7 A8 A41 A8 A41 A40 A9 A40 A9 A10 A39 A10 A39 A38 A11 A38 A11 A12 A37 A12 A37 A36 A13 A36 A13 A14 A35 A14 A35 A34 A15 A34 A15 A16 A33 A16 A33 A32 A17 A32 A17 A18 A31 A18 A31 A30 A19 A30 A19 A20 A29 A20 A29 A28 A21 A28 A21 A22 A27 A22 A27 A26 A23 A26 A23 A24 A25 A24 A25 output tunesheet-ordered-a6.pdf
+# JavaScript code to generate page string (n is the number of pages in tunesheet-4.pdf): var n=52,s=[];for(let i=1;i<=n/2;i+=2){s.push(n-i+1,i,n-i+1,i,i+1,n-i,i+1,n-i);};'A'+s.join(' A');
+pdftk A=tunesheet-4.pdf cat A52 A1 A52 A1 A2 A51 A2 A51 A50 A3 A50 A3 A4 A49 A4 A49 A48 A5 A48 A5 A6 A47 A6 A47 A46 A7 A46 A7 A8 A45 A8 A45 A44 A9 A44 A9 A10 A43 A10 A43 A42 A11 A42 A11 A12 A41 A12 A41 A40 A13 A40 A13 A14 A39 A14 A39 A38 A15 A38 A15 A16 A37 A16 A37 A36 A17 A36 A17 A18 A35 A18 A35 A34 A19 A34 A19 A20 A33 A20 A33 A32 A21 A32 A21 A22 A31 A22 A31 A30 A23 A30 A23 A24 A29 A24 A29 A28 A25 A28 A25 A26 A27 A26 A27 output tunesheet-ordered-a6.pdf
 
 # Convert the pdf to a PDF with 4 A6 pages per A4
 pdfnup --nup 2x2 --paper a4paper --no-landscape tunesheet-ordered-a6.pdf
 
 # Convert the pdf to a PDF with 4 A6 pages per A4
-# JavaScript code to generate page string: var n=48,s=[ ],m=Math.ceil(n/2);for(i=1;i<=m;i+=2){s.push(n-i+1,i,i+1,n-i);};'A'+s.join(' A');
-pdftk A=tunesheet.pdf cat A48 A1 A2 A47 A46 A3 A4 A45 A44 A5 A6 A43 A42 A7 A8 A41 A40 A9 A10 A39 A38 A11 A12 A37 A36 A13 A14 A35 A34 A15 A16 A33 A32 A17 A18 A31 A30 A19 A20 A29 A28 A21 A22 A27 A26 A23 A24 A25 output tunesheet-ordered-a5.pdf
+# JavaScript code to generate page string: var var n=52,s=[];for(i=1;i<=n/2;i+=2){s.push(n-i+1,i,i+1,n-i);};'A'+s.join(' A');
+pdftk A=tunesheet-4.pdf cat A52 A1 A2 A51 A50 A3 A4 A49 A48 A5 A6 A47 A46 A7 A8 A45 A44 A9 A10 A43 A42 A11 A12 A41 A40 A13 A14 A39 A38 A15 A16 A37 A36 A17 A18 A35 A34 A19 A20 A33 A32 A21 A22 A31 A30 A23 A24 A29 A28 A25 A26 A27 output tunesheet-ordered-a5.pdf
 
 # Generate A4 pages with two A5 pages per page
 pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
 
 
 # Rename output files
-#rm -f network.pdf tunes.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf
 mv tunesheet-ordered-a5-nup.pdf tunesheet-a5.pdf
 mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 
@@ -127,8 +130,14 @@ pdftk A=tunesheet-a4.pdf cat A42-47 output single/dances.pdf
 pdftk A=tunes.pdf cat A15-16 output coupe-decale.pdf
 pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
 
+pdftk A=tunes.pdf cat A37 output the-sirens-of-titan.pdf
+pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
+
+pdftk A=tunes.pdf cat A40 output wolf.pdf
+pdfjam --outfile single/wolf.pdf --paper a4paper --landscape wolf.pdf
+
 # Remove temporary files
-rm -f network.pdf tunes.pdf tunesheet.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf front.svg front.pdf back.svg back.pdf
+rm -f network.pdf tunes.pdf tunesheet.pdf tunesheet-4.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
 
 
 # Print result
