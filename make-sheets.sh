@@ -62,7 +62,7 @@ for((i=0; $i<50; i++)); do
 done
 
 # Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-pdftk A=tunes.pdf cat A5-7 A8-9west A10west A11 A12-14west A17 A18-22west A23 A24-27west A28 A29west A30 A31-32west A33-35 A36-38west A39 A40west A41 A42west A43-end output tunes-rotated.pdf
+pdftk A=tunes.pdf cat A5-7 A8-9west A10west A11 A12-14west A17 A18-22west A23 A24-27west A28 A29west A30 A31-32west A33-35 A36west A38-39west A41 A42west A43 A44west A45-end output tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf)
 pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-end D output tunesheet.pdf
@@ -86,7 +86,6 @@ pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
 
 
 # Rename output files
-#rm -f network.pdf tunes.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf
 mv tunesheet-ordered-a5-nup.pdf tunesheet-a5.pdf
 mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 
@@ -127,8 +126,14 @@ pdftk A=tunesheet-a4.pdf cat A42-47 output single/dances.pdf
 pdftk A=tunes.pdf cat A15-16 output coupe-decale.pdf
 pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
 
+pdftk A=tunes.pdf cat A37 output the-sirens-of-titan.pdf
+pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
+
+pdftk A=tunes.pdf cat A40 output wolf.pdf
+pdfjam --outfile single/wolf.pdf --paper a4paper --landscape wolf.pdf
+
 # Remove temporary files
-rm -f network.pdf tunes.pdf tunesheet.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf front.svg front.pdf back.svg back.pdf
+rm -f network.pdf tunes.pdf tunesheet.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
 
 
 # Print result
