@@ -49,16 +49,32 @@ Groove
 ------
 
 * Heading "Groove" 12pt Arial bold
-* Beat numbers underlined by 1.75pt bold. No lines in between beats
-* Instruments left-aligned, 9pt Arial
-* Strokes centered, 9pt Arial. In between strokes 0.05pt #969696 vertical lines. In between beats 0.75pt black vertical lines. In between bars 1.75pt black vertical lines. No horizontal lines.
-* One free line separating different instruments.
+* Beat numbers:
+    * centered, 9pt Arial
+    * Bottom border: 1.75pt black
+    * No borders in between beats
+* Instrument names:
+    * left-aligned, 9pt Arial
+    * Order (and spelling): Low Surdo, Mid Surdo, High Surdo, Repinique, Snare, Tamborim, Agogô (, Shaker) (watch out for spelling of Repinique (not Repenique!) and Agogô)
+    * One free line separating different instruments, Surdos are grouped together without free lines
+* Bar number (number 1, 2, 3, 4 between instrument name and strokes in case the instrument line spans across multiple rows):
+    * Only there when line actually spans multiple rows
+    * right-aligned, 9pt Arial
+* Strokes:
+    * centered, 9pt Arial
+    * 0.05pt #969696 vertical borders in between strokes
+    * 0.75pt black vertical borders in between beats
+    * 1.75pt black vertical borders in between bars
+    * No horizontal lines.
+* Explanations:
+    * Underneath the strokes, no empty line
+    * right-aligned, 9pt Arial
 
 Breaks
 ------
 
 * Break name: 10pt bold
 * Break sign underneath break name, 9pt Arial italic
-* Strokes same style as in Groove, but whole break surrounded by 0.75pt black vertical border.
+* Strokes same style as in Groove, but whole break surrounded by 0.75pt black border.
 * Any explanation right of break or underneath (right-aligned), 9pt Arial
 * No free lines
