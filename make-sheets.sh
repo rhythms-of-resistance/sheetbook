@@ -45,8 +45,9 @@ rm -rf *
 
 # Put current month in
 month="$(date '+%B %Y')"
-cat ../front.svg | sed -re "s/\[month]/$month/g" > front.svg
-cat ../back.svg | sed -re "s/\[month]/$month/g" > back.svg
+version="$(git log --pretty=format:'%h' -n 1)"
+cat ../front.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > front.svg
+cat ../back.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > back.svg
 
 
 # Convert files to PDF
