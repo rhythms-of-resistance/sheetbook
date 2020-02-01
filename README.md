@@ -12,7 +12,7 @@ Update
 
 If you added new pages to the tunesheet or moved pages around, make sure to update the page numbers in the [`make-sheets.sh`](./make-sheets.sh) script.
 
-PDF files are automatically generated and published to the [generated branch](https://github.com/rhythms-of-resistance/sheetbook/tree/master/generated) when committing changes.
+PDF files are automatically generated and published to the [master branch](https://github.com/rhythms-of-resistance/sheetbook/tree/master) when committing changes.
 
 If you want to do a manual rebuild, follow one of the following instructions.
 
