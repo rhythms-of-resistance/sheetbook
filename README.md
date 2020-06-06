@@ -26,7 +26,7 @@ docker run --rm -v "$PWD:/home/ror/sheetbook" rhythmsofresistance/sheetbook-buil
 
 ### Manual update using script
 
-Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font and LibreOffice, Inkscape, pdftk, pdfjam and pdfnup installed.
+Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) font and LibreOffice, Inkscape, qpdf, pdfjam and pdfnup installed.
 
 Then run `./make-sheets.sh`.
 

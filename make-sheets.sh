@@ -6,7 +6,7 @@ set -e
 # Check for missing programs
 
 missing=()
-for i in pdftk pdfjam pdfnup inkscape; do
+for i in qpdf pdfjam pdfnup inkscape; do
 	if ! which "$i" >/dev/null 2>&1; then
 		missing+=("$i")
 	fi
@@ -53,8 +53,8 @@ cat ../back.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version
 # Convert files to PDF
 localc --convert-to pdf ../tunes.ods
 lowriter --convert-to pdf ../network.odt
-inkscape front.svg --export-pdf=front.pdf
-inkscape back.svg --export-pdf=back.pdf
+inkscape front.svg --export-filename=front.pdf --export-type=pdf
+inkscape back.svg --export-filename=back.pdf --export-type=pdf
 
 # Wait for PDFs (generation is sometimes run in background)
 for((i=0; $i<50; i++)); do
@@ -63,27 +63,27 @@ for((i=0; $i<50; i++)); do
 done
 
 # Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-pdftk A=tunes.pdf cat A5-7 A8-9west A10west A11 A12-14west A17 A18-22west A23 A24-27west A28 A29west A30 A31-32west A33-35 A36west A38-40west A41 A42west A43 A44west A45-end output tunes-rotated.pdf
+qpdf tunes.pdf --pages . 5-14,17-36,38-z -- --rotate=-90:4-6,8-10,12-16,18-21,23,25-26,30-33,35,37 tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf) (make sure that the page number is an even number)
-pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-37 E C38-end D output tunesheet.pdf
+qpdf --empty --pages front.pdf network.pdf tunes-rotated.pdf 1-37 ../blank.pdf tunes-rotated.pdf 38-z back.pdf -- tunesheet.pdf
 
 # The same, but make sure that the page number is divisible by 4
-pdftk A=front.pdf B=network.pdf C=tunes-rotated.pdf D=back.pdf E=../blank.pdf cat A B C1-3 C4-37 E C38-end E E D output tunesheet-4.pdf
+qpdf --empty --pages front.pdf network.pdf tunes-rotated.pdf 1-37 ../blank.pdf tunes-rotated.pdf 38-z ../blank.pdf 1,1 back.pdf -- tunesheet-4.pdf
 
 # Convert to A4
 pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet.pdf
 
 # Order pages for A6 double booklet print
-# JavaScript code to generate page string (n is the number of pages in tunesheet-4.pdf): var n=52,s=[];for(let i=1;i<=n/2;i+=2){s.push(n-i+1,i,n-i+1,i,i+1,n-i,i+1,n-i);};'A'+s.join(' A');
-pdftk A=tunesheet-4.pdf cat A52 A1 A52 A1 A2 A51 A2 A51 A50 A3 A50 A3 A4 A49 A4 A49 A48 A5 A48 A5 A6 A47 A6 A47 A46 A7 A46 A7 A8 A45 A8 A45 A44 A9 A44 A9 A10 A43 A10 A43 A42 A11 A42 A11 A12 A41 A12 A41 A40 A13 A40 A13 A14 A39 A14 A39 A38 A15 A38 A15 A16 A37 A16 A37 A36 A17 A36 A17 A18 A35 A18 A35 A34 A19 A34 A19 A20 A33 A20 A33 A32 A21 A32 A21 A22 A31 A22 A31 A30 A23 A30 A23 A24 A29 A24 A29 A28 A25 A28 A25 A26 A27 A26 A27 output tunesheet-ordered-a6.pdf
+# JavaScript code to generate page string (n is the number of pages in tunesheet-4.pdf): var n=52,s=[];for(let i=1;i<=n/2;i+=2){s.push(n-i+1,i,n-i+1,i,i+1,n-i,i+1,n-i);};s.join(',');
+qpdf tunesheet-4.pdf --pages . 52,1,52,1,2,51,2,51,50,3,50,3,4,49,4,49,48,5,48,5,6,47,6,47,46,7,46,7,8,45,8,45,44,9,44,9,10,43,10,43,42,11,42,11,12,41,12,41,40,13,40,13,14,39,14,39,38,15,38,15,16,37,16,37,36,17,36,17,18,35,18,35,34,19,34,19,20,33,20,33,32,21,32,21,22,31,22,31,30,23,30,23,24,29,24,29,28,25,28,25,26,27,26,27 -- tunesheet-ordered-a6.pdf
 
 # Convert the pdf to a PDF with 4 A6 pages per A4
 pdfnup --nup 2x2 --paper a4paper --no-landscape tunesheet-ordered-a6.pdf
 
 # Convert the pdf to a PDF with 4 A6 pages per A4
-# JavaScript code to generate page string: var var n=52,s=[];for(i=1;i<=n/2;i+=2){s.push(n-i+1,i,i+1,n-i);};'A'+s.join(' A');
-pdftk A=tunesheet-4.pdf cat A52 A1 A2 A51 A50 A3 A4 A49 A48 A5 A6 A47 A46 A7 A8 A45 A44 A9 A10 A43 A42 A11 A12 A41 A40 A13 A14 A39 A38 A15 A16 A37 A36 A17 A18 A35 A34 A19 A20 A33 A32 A21 A22 A31 A30 A23 A24 A29 A28 A25 A26 A27 output tunesheet-ordered-a5.pdf
+# JavaScript code to generate page string: var n=52,s=[];for(i=1;i<=n/2;i+=2){s.push(n-i+1,i,i+1,n-i);};s.join(',');
+qpdf tunesheet-4.pdf --pages . 52,1,2,51,50,3,4,49,48,5,6,47,46,7,8,45,44,9,10,43,42,11,12,41,40,13,14,39,38,15,16,37,36,17,18,35,34,19,20,33,32,21,22,31,30,23,24,29,28,25,26,27 -- tunesheet-ordered-a5.pdf
 
 # Generate A4 pages with two A5 pages per page
 pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
@@ -96,45 +96,43 @@ mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
 
 # Generate single tunes
 mkdir single
-pdftk A=tunesheet-a4.pdf cat A6-8 output single/breaks.pdf
-pdftk A=tunesheet-a4.pdf cat A9east output single/afoxe.pdf
-pdftk A=tunesheet-a4.pdf cat A12 output single/angela-davis.pdf
-pdftk A=tunesheet-a4.pdf cat A10-11east output single/bhangra.pdf
-pdftk A=tunesheet-a4.pdf cat A14-15east output single/crazy-monkey.pdf
-pdftk A=tunesheet-a4.pdf cat A13east output single/cochabamba.pdf
-pdftk A=tunesheet-a4.pdf cat A16 output single/custard.pdf
-pdftk A=tunesheet-a4.pdf cat A17east output single/drum-bass.pdf
-pdftk A=tunesheet-a4.pdf cat A18east output single/drunken-sailor.pdf
-pdftk A=tunesheet-a4.pdf cat A19east output single/funk.pdf
-pdftk A=tunesheet-a4.pdf cat A20east output single/hafla.pdf
-pdftk A=tunesheet-a4.pdf cat A21east output single/hedgehog.pdf
-pdftk A=tunesheet-a4.pdf cat A22 output single/karla-shnikov.pdf
-pdftk A=tunesheet-a4.pdf cat A24-25east output single/menaiek.pdf
-pdftk A=tunesheet-a4.pdf cat A23east output single/no-border-bossa.pdf
-pdftk A=tunesheet-a4.pdf cat A26east output single/nova-balanca.pdf
-pdftk A=tunesheet-a4.pdf cat A27 output single/orangutan.pdf
-pdftk A=tunesheet-a4.pdf cat A28east output single/ragga.pdf
-pdftk A=tunesheet-a4.pdf cat A30-31east output single/rope-skipping.pdf
-pdftk A=tunesheet-a4.pdf cat A32-33 output single/samba-reggae.pdf
-pdftk A=tunesheet-a4.pdf cat A29 output single/sambasso.pdf
-pdftk A=tunesheet-a4.pdf cat A34 output single/sheffield-samba-reggae.pdf
-pdftk A=tunesheet-a4.pdf cat A35east output single/the-roof-is-on-fire.pdf
-pdftk A=tunesheet-a4.pdf cat A36east output single/tequila.pdf
-pdftk A=tunesheet-a4.pdf cat A37east output single/walc.pdf
-pdftk A=tunesheet-a4.pdf cat A38 output single/van-harte-pardon.pdf
-pdftk A=tunesheet-a4.pdf cat A39east output single/voodoo.pdf
-pdftk A=tunesheet-a4.pdf cat A40 output single/xango.pdf
-pdftk A=tunesheet-a4.pdf cat A41east output single/zurav-love.pdf
-pdftk A=tunesheet-a4.pdf cat A42-47 output single/dances.pdf
+qpdf tunesheet-a4.pdf --pages . 6-8 -- single/breaks.pdf
+qpdf tunesheet-a4.pdf --pages . 9 -- --rotate=+90 single/afoxe.pdf
+qpdf tunesheet-a4.pdf --pages . 12 -- single/angela-davis.pdf
+qpdf tunesheet-a4.pdf --pages . 10-11 -- --rotate=+90 single/bhangra.pdf
+qpdf tunesheet-a4.pdf --pages . 14-15 -- --rotate=+90 single/crazy-monkey.pdf
+qpdf tunesheet-a4.pdf --pages . 13 -- --rotate=+90 single/cochabamba.pdf
+qpdf tunesheet-a4.pdf --pages . 16 -- single/custard.pdf
+qpdf tunesheet-a4.pdf --pages . 17 -- --rotate=+90 single/drum-bass.pdf
+qpdf tunesheet-a4.pdf --pages . 18 -- --rotate=+90 single/drunken-sailor.pdf
+qpdf tunesheet-a4.pdf --pages . 19 -- --rotate=+90 single/funk.pdf
+qpdf tunesheet-a4.pdf --pages . 20 -- --rotate=+90 single/hafla.pdf
+qpdf tunesheet-a4.pdf --pages . 21 -- --rotate=+90 single/hedgehog.pdf
+qpdf tunesheet-a4.pdf --pages . 22 -- single/karla-shnikov.pdf
+qpdf tunesheet-a4.pdf --pages . 24-25 -- --rotate=+90 single/menaiek.pdf
+qpdf tunesheet-a4.pdf --pages . 23 -- --rotate=+90 single/no-border-bossa.pdf
+qpdf tunesheet-a4.pdf --pages . 26 -- --rotate=+90 single/nova-balanca.pdf
+qpdf tunesheet-a4.pdf --pages . 27 -- single/orangutan.pdf
+qpdf tunesheet-a4.pdf --pages . 28 -- --rotate=+90 single/ragga.pdf
+qpdf tunesheet-a4.pdf --pages . 30-31 -- --rotate=+90 single/rope-skipping.pdf
+qpdf tunesheet-a4.pdf --pages . 32-33 -- single/samba-reggae.pdf
+qpdf tunesheet-a4.pdf --pages . 29 -- single/sambasso.pdf
+qpdf tunesheet-a4.pdf --pages . 34 -- single/sheffield-samba-reggae.pdf
+qpdf tunesheet-a4.pdf --pages . 35 -- --rotate=+90 single/the-roof-is-on-fire.pdf
+qpdf tunesheet-a4.pdf --pages . 36 -- --rotate=+90 single/tequila.pdf
+qpdf tunesheet-a4.pdf --pages . 37 -- --rotate=+90 single/walc.pdf
+qpdf tunesheet-a4.pdf --pages . 38 -- --rotate=+90 single/wolf.pdf
+qpdf tunesheet-a4.pdf --pages . 39 -- single/van-harte-pardon.pdf
+qpdf tunesheet-a4.pdf --pages . 40 -- --rotate=+90 single/voodoo.pdf
+qpdf tunesheet-a4.pdf --pages . 41 -- single/xango.pdf
+qpdf tunesheet-a4.pdf --pages . 42 -- --rotate=+90 single/zurav-love.pdf
+qpdf tunesheet-a4.pdf --pages . 44-49 -- single/dances.pdf
 
-pdftk A=tunes.pdf cat A15-16 output coupe-decale.pdf
+qpdf tunes.pdf --pages . 15-16 -- coupe-decale.pdf
 pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
 
-pdftk A=tunes.pdf cat A37 output the-sirens-of-titan.pdf
+qpdf tunes.pdf --pages . 37 -- the-sirens-of-titan.pdf
 pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
-
-pdftk A=tunes.pdf cat A40 output wolf.pdf
-pdfjam --outfile single/wolf.pdf --paper a4paper --landscape wolf.pdf
 
 # Remove temporary files
 rm -f network.pdf tunes.pdf tunesheet.pdf tunesheet-4.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
