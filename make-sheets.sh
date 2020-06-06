@@ -53,8 +53,8 @@ cat ../back.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version
 # Convert files to PDF
 localc --convert-to pdf ../tunes.ods
 lowriter --convert-to pdf ../network.odt
-inkscape front.svg --export-pdf=front.pdf
-inkscape back.svg --export-pdf=back.pdf
+inkscape front.svg --export-filename=front.pdf --export-type=pdf
+inkscape back.svg --export-filename=back.pdf --export-type=pdf
 
 # Wait for PDFs (generation is sometimes run in background)
 for((i=0; $i<50; i++)); do
