@@ -121,20 +121,18 @@ pdftk A=tunesheet-a4.pdf cat A34 output single/sheffield-samba-reggae.pdf
 pdftk A=tunesheet-a4.pdf cat A35east output single/the-roof-is-on-fire.pdf
 pdftk A=tunesheet-a4.pdf cat A36east output single/tequila.pdf
 pdftk A=tunesheet-a4.pdf cat A37east output single/walc.pdf
-pdftk A=tunesheet-a4.pdf cat A38 output single/van-harte-pardon.pdf
-pdftk A=tunesheet-a4.pdf cat A39east output single/voodoo.pdf
-pdftk A=tunesheet-a4.pdf cat A40 output single/xango.pdf
-pdftk A=tunesheet-a4.pdf cat A41east output single/zurav-love.pdf
-pdftk A=tunesheet-a4.pdf cat A42-47 output single/dances.pdf
+pdftk A=tunesheet-a4.pdf cat A38east output single/wolf.pdf
+pdftk A=tunesheet-a4.pdf cat A39 output single/van-harte-pardon.pdf
+pdftk A=tunesheet-a4.pdf cat A40east output single/voodoo.pdf
+pdftk A=tunesheet-a4.pdf cat A41 output single/xango.pdf
+pdftk A=tunesheet-a4.pdf cat A42east output single/zurav-love.pdf
+pdftk A=tunesheet-a4.pdf cat A44-49 output single/dances.pdf
 
 pdftk A=tunes.pdf cat A15-16 output coupe-decale.pdf
 pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
 
 pdftk A=tunes.pdf cat A37 output the-sirens-of-titan.pdf
 pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
-
-pdftk A=tunes.pdf cat A40 output wolf.pdf
-pdfjam --outfile single/wolf.pdf --paper a4paper --landscape wolf.pdf
 
 # Remove temporary files
 rm -f network.pdf tunes.pdf tunesheet.pdf tunesheet-4.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
