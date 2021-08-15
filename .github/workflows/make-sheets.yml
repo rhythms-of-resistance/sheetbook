@@ -19,11 +19,15 @@ jobs:
         name: Create merge commit
         run: |
           git config user.name "PDF generation bot"
+          git config user.email ""
           git checkout master --
           git merge --no-commit -s ours "$GITHUB_SHA"
           ls -1a | grep -Fxv . | grep -Fxv .. | grep -Fxv .git | xargs rm -rf
           git checkout "$GITHUB_SHA" -- ./
           rm -f .gitignore
+      -
+        name: Pull Docker image
+        run: docker pull rhythmsofresistance/sheetbook-build
       -
         name: Generate PDFs
         run: docker run -v "$PWD:/home/ror/sheetbook" --rm rhythmsofresistance/sheetbook-build
