@@ -1,0 +1,35 @@
+name: Generate PDFs
+
+on:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  make_sheets:
+    name: Generate PDFs
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      -
+        name: Create merge commit
+        run: |
+          git config user.name "PDF generation bot"
+          git checkout master --
+          git merge --no-commit -s ours "$GITHUB_SHA"
+          ls -1a | grep -Fxv . | grep -Fxv .. | grep -Fxv .git | xargs rm -rf
+          git checkout "$GITHUB_SHA" -- ./
+          rm -f .gitignore
+      -
+        name: Generate PDFs
+        run: docker run -v "$PWD:/home/ror/sheetbook" --rm rhythmsofresistance/sheetbook-build
+      -
+        name: Push merge commit
+        run: |
+          git add -A
+          git commit -m "Automatically generated PDFs"
+          git push
