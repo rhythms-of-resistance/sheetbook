@@ -63,7 +63,7 @@ for((i=0; $i<50; i++)); do
 done
 
 # Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-qpdf tunes.pdf --pages . 5-14,17-36,38-z -- --rotate=-90:4-6,8-10,12-16,18-21,23,25-26,30-33,35,37 tunes-rotated.pdf
+qpdf tunes.pdf --pages . 5-14,17-22,24-36,38-z -- --rotate=-90:4-6,8-10,12-16,18-21,23,25-26,30-33,35,37 tunes-rotated.pdf
 
 # Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf) (make sure that the page number is an even number)
 qpdf --empty --pages front.pdf network.pdf tunes-rotated.pdf 1-37 ../blank.pdf tunes-rotated.pdf 38-z back.pdf -- tunesheet.pdf
@@ -131,11 +131,14 @@ qpdf tunesheet-a4.pdf --pages . 44-49 -- single/dances.pdf
 qpdf tunes.pdf --pages . 15-16 -- coupe-decale.pdf
 pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
 
+qpdf tunes.pdf --pages . 23 -- jungle.pdf
+pdfjam --outfile single/jungle.pdf --paper a4paper --landscape jungle.pdf
+
 qpdf tunes.pdf --pages . 37 -- the-sirens-of-titan.pdf
 pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
 
 # Remove temporary files
-rm -f network.pdf tunes.pdf tunesheet.pdf tunesheet-4.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
+rm -f network.pdf tunes.pdf tunesheet.pdf tunesheet-4.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf jungle.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
 
 
 # Print result
