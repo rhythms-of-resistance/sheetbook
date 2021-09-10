@@ -134,7 +134,7 @@ pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decal
 qpdf tunes.pdf --pages . 23 -- jungle.pdf
 pdfjam --outfile single/jungle.pdf --paper a4paper --landscape jungle.pdf
 
-qpdf tunes.pdf --pages . 37 -- the-sirens-of-titan.pdf
+qpdf tunes.pdf --pages . 38 -- the-sirens-of-titan.pdf
 pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
 
 # Remove temporary files
