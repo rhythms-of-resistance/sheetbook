@@ -6,7 +6,7 @@ set -e
 # Check for missing programs
 
 missing=()
-for i in qpdf pdfjam pdfnup inkscape; do
+for i in qpdf pdfjam inkscape; do
 	if ! which "$i" >/dev/null 2>&1; then
 		missing+=("$i")
 	fi
@@ -25,7 +25,7 @@ fi
 # Check for missing files
 
 missing=()
-for i in tunes.ods front.svg back.svg network.odt; do
+for i in front.svg back.svg network.odt; do
 	if [ ! -f "$i" ]; then
 		missing+=("$i")
 	fi
@@ -38,107 +38,81 @@ fi
 
 
 # Clear previous generated files
-[ ! -e generated ] && mkdir generated
+mkdir -p generated
 cd generated
 rm -rf *
+mkdir -p tmp/single tmp/single-rotated
+cd tmp
 
 
 # Put current month in
 month="$(date '+%B %Y')"
 version="$(git log --pretty=format:'%h' -n 1)"
-cat ../front.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > front.svg
-cat ../back.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > back.svg
+cat ../../front.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > front.svg
+cat ../../back.svg | sed -re "s/\[month]/$month/g" | sed -re "s/\[version]/$version/g" > back.svg
 
 
 # Convert files to PDF
-localc --convert-to pdf ../tunes.ods
-lowriter --convert-to pdf ../network.odt
+pushd single
+	localc --convert-to pdf ../../../*.ods
+popd
+lowriter --convert-to pdf ../../network.odt
 inkscape front.svg --export-filename=front.pdf --export-type=pdf
 inkscape back.svg --export-filename=back.pdf --export-type=pdf
 
 # Wait for PDFs (generation is sometimes run in background)
-for((i=0; $i<50; i++)); do
-	[ -e "tunes.pdf" -a -e "network.pdf" ] && break
-	sleep 0.1
-done
+#for((i=0; $i<50; i++)); do
+#	[ -e "tunes.pdf" -a -e "network.pdf" ] && break
+#	sleep 0.1
+#done
 
-# Rotate pages so that all are in landscape (skip “Breaks & Signs” section)
-qpdf tunes.pdf --pages . 5-14,17-22,24-36,38-z -- --rotate=-90:4-6,8-10,12-16,18-21,23,25-26,30-33,35,37 tunes-rotated.pdf
+# Scale individual tune PDFs up to A4, and generate PDFs normalized to portrait orientation
+pushd single
+	mkdir ../../single
+	for i in *.pdf; do
+		if pdfinfo "$i" | grep -qF 'Page size:      419.556'; then
+			# Landscape format
+			pdfjam --outfile "../../single/$i" --paper a4paper --landscape "$i"
+			qpdf "../../single/$i" --rotate=-90 "../single-rotated/$i"
+		else
+			# Portrait format
+			pdfjam --outfile "../../single/$i" --paper a4paper "$i"
+			cp "../../single/$i" "../single-rotated/$i"
+		fi
+	done
+popd
 
-# Concatenate PDFs (skipping “Breaks & Signs” section from tunes.pdf) (make sure that the page number is an even number)
-qpdf --empty --pages front.pdf network.pdf tunes-rotated.pdf 1-37 ../blank.pdf tunes-rotated.pdf 38-z back.pdf -- tunesheet.pdf
+pushd single-rotated
+	# Assemble pages for the tunesheet booklet. The tunes should follow alphabetical order where possible, but two-page tunes can be moved so that they take up a double-page together.
 
-# The same, but make sure that the page number is divisible by 4
-qpdf --empty --pages front.pdf network.pdf tunes-rotated.pdf 1-37 ../blank.pdf tunes-rotated.pdf 38-z ../blank.pdf 1,1 back.pdf -- tunesheet-4.pdf
+	# Assemble pages for A4 tunesheet (page number has to be divisable by 2)
+	qpdf --empty --pages ../front.pdf ../network.pdf breaks.pdf afoxe.pdf bhangra.pdf angela-davis.pdf cochabamba.pdf crazy-monkey.pdf custard.pdf drum-bass.pdf drunken-sailor.pdf funk.pdf hafla.pdf hedgehog.pdf karla-shnikov.pdf no-border-bossa.pdf menaiek.pdf nova-balanca.pdf orangutan.pdf ragga.pdf sambasso.pdf rope-skipping.pdf samba-reggae.pdf sheffield-samba-reggae.pdf the-sirens-of-titan.pdf tequila.pdf walc.pdf wolf.pdf van-harte-pardon.pdf voodoo.pdf xango.pdf zurav-love.pdf ../../../blank.pdf dances.pdf ../back.pdf -- ../tunesheet-2.pdf
 
-# Convert to A4
-pdfjam --outfile tunesheet-a4.pdf --paper a4paper tunesheet.pdf
+	# Assemble pages for A5/A6 tunesheet (page number has to be divisable by 4)
+	qpdf --empty --pages ../front.pdf ../network.pdf breaks.pdf afoxe.pdf bhangra.pdf angela-davis.pdf cochabamba.pdf crazy-monkey.pdf custard.pdf drum-bass.pdf drunken-sailor.pdf funk.pdf hafla.pdf hedgehog.pdf karla-shnikov.pdf no-border-bossa.pdf menaiek.pdf nova-balanca.pdf orangutan.pdf ragga.pdf sambasso.pdf rope-skipping.pdf samba-reggae.pdf sheffield-samba-reggae.pdf the-sirens-of-titan.pdf tequila.pdf walc.pdf wolf.pdf van-harte-pardon.pdf voodoo.pdf xango.pdf zurav-love.pdf ../../../blank.pdf dances.pdf ../../../blank.pdf ../../../blank.pdf ../back.pdf -- ../tunesheet-4.pdf
+popd
+
+# Generate A4 tunesheet
+pdfjam --outfile ../tunesheet-a4.pdf --paper a4paper tunesheet-2.pdf
 
 # Order pages for A6 double booklet print
 # JavaScript code to generate page string (n is the number of pages in tunesheet-4.pdf): var n=52,s=[];for(let i=1;i<=n/2;i+=2){s.push(n-i+1,i,n-i+1,i,i+1,n-i,i+1,n-i);};s.join(',');
 qpdf tunesheet-4.pdf --pages . 52,1,52,1,2,51,2,51,50,3,50,3,4,49,4,49,48,5,48,5,6,47,6,47,46,7,46,7,8,45,8,45,44,9,44,9,10,43,10,43,42,11,42,11,12,41,12,41,40,13,40,13,14,39,14,39,38,15,38,15,16,37,16,37,36,17,36,17,18,35,18,35,34,19,34,19,20,33,20,33,32,21,32,21,22,31,22,31,30,23,30,23,24,29,24,29,28,25,28,25,26,27,26,27 -- tunesheet-ordered-a6.pdf
 
 # Convert the pdf to a PDF with 4 A6 pages per A4
-pdfnup --nup 2x2 --paper a4paper --no-landscape tunesheet-ordered-a6.pdf
+pdfjam --outfile ../tunesheet-a6.pdf --nup 2x2 --paper a4paper --no-landscape tunesheet-ordered-a6.pdf
 
 # Convert the pdf to a PDF with 4 A6 pages per A4
 # JavaScript code to generate page string: var n=52,s=[];for(i=1;i<=n/2;i+=2){s.push(n-i+1,i,i+1,n-i);};s.join(',');
 qpdf tunesheet-4.pdf --pages . 52,1,2,51,50,3,4,49,48,5,6,47,46,7,8,45,44,9,10,43,42,11,12,41,40,13,14,39,38,15,16,37,36,17,18,35,34,19,20,33,32,21,22,31,30,23,24,29,28,25,26,27 -- tunesheet-ordered-a5.pdf
 
 # Generate A4 pages with two A5 pages per page
-pdfnup --nup 2x1 --paper a4paper tunesheet-ordered-a5.pdf
+pdfjam --outfile ../tunesheet-a5.pdf --nup 2x1 --paper a4paper --landscape tunesheet-ordered-a5.pdf
 
-
-# Rename output files
-mv tunesheet-ordered-a5-nup.pdf tunesheet-a5.pdf
-mv tunesheet-ordered-a6-nup.pdf tunesheet-a6.pdf
-
-
-# Generate single tunes
-mkdir single
-qpdf tunesheet-a4.pdf --pages . 6-8 -- single/breaks.pdf
-qpdf tunesheet-a4.pdf --pages . 9 -- --rotate=+90 single/afoxe.pdf
-qpdf tunesheet-a4.pdf --pages . 12 -- single/angela-davis.pdf
-qpdf tunesheet-a4.pdf --pages . 10-11 -- --rotate=+90 single/bhangra.pdf
-qpdf tunesheet-a4.pdf --pages . 14-15 -- --rotate=+90 single/crazy-monkey.pdf
-qpdf tunesheet-a4.pdf --pages . 13 -- --rotate=+90 single/cochabamba.pdf
-qpdf tunesheet-a4.pdf --pages . 16 -- single/custard.pdf
-qpdf tunesheet-a4.pdf --pages . 17 -- --rotate=+90 single/drum-bass.pdf
-qpdf tunesheet-a4.pdf --pages . 18 -- --rotate=+90 single/drunken-sailor.pdf
-qpdf tunesheet-a4.pdf --pages . 19 -- --rotate=+90 single/funk.pdf
-qpdf tunesheet-a4.pdf --pages . 20 -- --rotate=+90 single/hafla.pdf
-qpdf tunesheet-a4.pdf --pages . 21 -- --rotate=+90 single/hedgehog.pdf
-qpdf tunesheet-a4.pdf --pages . 22 -- single/karla-shnikov.pdf
-qpdf tunesheet-a4.pdf --pages . 24-25 -- --rotate=+90 single/menaiek.pdf
-qpdf tunesheet-a4.pdf --pages . 23 -- --rotate=+90 single/no-border-bossa.pdf
-qpdf tunesheet-a4.pdf --pages . 26 -- --rotate=+90 single/nova-balanca.pdf
-qpdf tunesheet-a4.pdf --pages . 27 -- single/orangutan.pdf
-qpdf tunesheet-a4.pdf --pages . 28 -- --rotate=+90 single/ragga.pdf
-qpdf tunesheet-a4.pdf --pages . 30-31 -- --rotate=+90 single/rope-skipping.pdf
-qpdf tunesheet-a4.pdf --pages . 32-33 -- single/samba-reggae.pdf
-qpdf tunesheet-a4.pdf --pages . 29 -- single/sambasso.pdf
-qpdf tunesheet-a4.pdf --pages . 34 -- single/sheffield-samba-reggae.pdf
-qpdf tunesheet-a4.pdf --pages . 35 -- --rotate=+90 single/the-roof-is-on-fire.pdf
-qpdf tunesheet-a4.pdf --pages . 36 -- --rotate=+90 single/tequila.pdf
-qpdf tunesheet-a4.pdf --pages . 37 -- --rotate=+90 single/walc.pdf
-qpdf tunesheet-a4.pdf --pages . 38 -- --rotate=+90 single/wolf.pdf
-qpdf tunesheet-a4.pdf --pages . 39 -- single/van-harte-pardon.pdf
-qpdf tunesheet-a4.pdf --pages . 40 -- --rotate=+90 single/voodoo.pdf
-qpdf tunesheet-a4.pdf --pages . 41 -- single/xango.pdf
-qpdf tunesheet-a4.pdf --pages . 42 -- --rotate=+90 single/zurav-love.pdf
-qpdf tunesheet-a4.pdf --pages . 44-49 -- single/dances.pdf
-
-qpdf tunes.pdf --pages . 15-16 -- coupe-decale.pdf
-pdfjam --outfile single/coupe-decale.pdf --paper a4paper --landscape coupe-decale.pdf
-
-qpdf tunes.pdf --pages . 23 -- jungle.pdf
-pdfjam --outfile single/jungle.pdf --paper a4paper --landscape jungle.pdf
-
-qpdf tunes.pdf --pages . 38 -- the-sirens-of-titan.pdf
-pdfjam --outfile single/the-sirens-of-titan.pdf --paper a4paper --landscape the-sirens-of-titan.pdf
 
 # Remove temporary files
-rm -f network.pdf tunes.pdf tunesheet.pdf tunesheet-4.pdf tunes-rotated.pdf tunesheet-ordered-a5.pdf tunesheet-ordered-a6.pdf coupe-decale.pdf jungle.pdf the-sirens-of-titan.pdf wolf.pdf front.svg front.pdf back.svg back.pdf
+cd ..
+rm -rf tmp
 
 
 # Print result
