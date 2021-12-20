@@ -18,7 +18,9 @@ The PDFs are generated using the [RoR sheetbook generator](https://github.com/rh
 
 [`front.svg`](./front.svg) and [`back.svg`](./back.svg) contain the front and back cover. The `[month]` placeholder is automatically filled with the current month+year and the `[version]` placeholder with the short commit ID.
 
-[`network.odt`](./network.odt) is the description of the RoR network, principles, history and RoR Player.
+[`front_ca-booklet.svg`](front_ca-booklet.svg) is used as the front cover for the cultural appropriation booklet.
+
+The various ODT files contain the text pages of the sheetbook (network description, history, ...).
 
 The ODS files contain the tune and dance sheets.
 
@@ -71,20 +73,3 @@ Right of tune name. 12pt Arial.
 * Strokes same style as in Groove, but whole break surrounded by 0.75pt black border.
 * Any explanation right of break or underneath (right-aligned), 9pt Arial
 * No free lines
-
-
-# Manual PDF generation
-
-## Using docker
-
-This is the most reliable way, as no dependencies/fonts (except docker) have to be installed.
-
-```bash
-docker run --rm -v "$PWD:/home/ror/sheetbook" rhythmsofresistance/sheetbook-build
-```
-
-## Using script
-
-Make sure to have the [BTNGrilledCheese](./BTNGrilledCheese.zip) and Liberation Sans fonts and LibreOffice, Inkscape, qpdf and pdfjam installed.
-
-Then run `./make-sheets.sh`.
