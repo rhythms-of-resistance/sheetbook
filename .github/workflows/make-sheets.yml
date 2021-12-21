@@ -30,7 +30,7 @@ jobs:
         run: docker pull rhythmsofresistance/sheetbook-generator
       -
         name: Generate PDFs
-        run: docker run -v "$PWD:/sheetbook" --rm rhythmsofresistance/sheetbook-generator single:all booklet:{a4,a5,a6}:{all,no-ca}
+        run: docker run -v "$PWD:/sheetbook" --rm rhythmsofresistance/sheetbook-generator single:all booklet:{a4,a5,a6}:{all,no-ca,ca-booklet}
       -
         name: Push merge commit
         run: |
