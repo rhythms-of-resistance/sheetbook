@@ -16,7 +16,7 @@ The PDFs are generated using the [RoR sheetbook generator](https://github.com/rh
 
 # File structure
 
-[`front.svg`](./front.svg) and [`back.svg`](./back.svg) contain the front and back cover. The `[month]` placeholder is automatically filled with the current month+year and the `[version]` placeholder with the short commit ID.
+[`front.svg`](./front.svg) and [`back.svg`](./back.svg) contain the front and back cover. The `[month]` placeholder is automatically filled with the current month+year and the `[version]` placeholder with the short commit ID. `[index]` is replaced by the list of tunes (in order) and `[pages]` by their corresponding page number.
 
 [`front_ca-booklet.svg`](front_ca-booklet.svg) is used as the front cover for the cultural appropriation booklet.
 
