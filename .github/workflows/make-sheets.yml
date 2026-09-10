@@ -12,16 +12,20 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       -
-        name: Create merge commit
+        name: Create working branch from master and merge triggering commit
         run: |
+          set -euo pipefail
           git config user.name "PDF generation bot"
           git config user.email ""
-          git checkout master --
-          git merge --no-commit -s ours "$GITHUB_SHA"
+
+          git fetch origin master
+          git switch -C pdf-generation origin/master
+          git merge --no-ff --no-commit -s ours "$GITHUB_SHA"
+
           ls -1a | grep -Fxv . | grep -Fxv .. | grep -Fxv .git | xargs rm -rf
           git checkout "$GITHUB_SHA" -- ./
           rm -f .gitignore
@@ -32,8 +36,10 @@ jobs:
         name: Generate PDFs
         run: docker run -v "$PWD:/sheetbook" --rm rhythmsofresistance/sheetbook-generator single:all booklet:{a4,a5,a6}:{all,no-ca,ca-booklet}
       -
-        name: Push merge commit
+        name: Commit and push generated PDFs to master
         run: |
+          set -euo pipefail
           git add -A
+          git diff --cached --quiet && exit 0
           git commit -m "Automatically generated PDFs"
-          git push
+          git push origin HEAD:master
